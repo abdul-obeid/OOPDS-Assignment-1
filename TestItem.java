@@ -96,7 +96,7 @@ class TestItem{
 		
 		File itemFile = new File(ItemDir + "/" + itemName + ".txt");
 		PrintWriter outputItem =  new PrintWriter(itemFile);
-		outputItem.println(movingItem);
+		outputItem.println(movingItem.writeToFile());
 		outputItem.close();
 	}
 	
