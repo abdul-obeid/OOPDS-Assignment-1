@@ -3,71 +3,127 @@ import java.io.*;
 
 
 class TestItem{
-	public static void main(String[] args) throws FileNotFoundException{
-		Scanner scan = new Scanner(System.in); 
-		
-		ArrayList<Item> array = new ArrayList<>();
-		File NamesFile = new File("ItemsNames.txt");
-		PrintWriter outputNames =  new PrintWriter(NamesFile); // comment that if you don't want to write (test the reading function only)
-		
-		
-		int i = 0;
-		do{			// comment that if you don't want to write (test the reading function only)
-			System.out.println("Enter the item information: (when done, enter stop)");
-			System.out.print("Enter item Name: ");
-			String itemName = scan.nextLine();
-			
-			System.out.print("Enter item Price: ");
-			double itemPrice = scan.nextDouble();
-			
-			scan.nextLine(); // consume rest of that line including newline (needed after nextDouble Int ...etc)
-			
-			System.out.print("Enter item Description: ");
-			String itemDescription = scan.nextLine();
-			
-			System.out.print("Enter item Type: ");
-			
-			String itemType = scan.nextLine();
-			array.add(new Item(itemName, itemPrice, itemDescription, itemType));
-			
-			itemName = itemName.replace(' ', '_');
-			
-			outputNames.println(itemName);
-			
-			
-			File itemFile = new File(itemName + ".txt");
-			// Scanner inputItem = new Scanner(itemFile);
-			PrintWriter outputItem =  new PrintWriter(itemFile);
-			outputItem.println(array.get(i));
-			outputItem.close();
-			System.out.print("Continue? (Y/N): ");
-			char countinue = scan.next().charAt(0);
-			if(countinue == 'N' || countinue == 'n')
+	public static void main(String[] args) throws IOException{
+		Scanner scan = new Scanner(System.in);
+		ArrayList<Item> ItemsArray = new ArrayList<>(); 
+		File ItemDir = new File("Item");
+		ItemDir.mkdir();
+		// Item movingItem;
+		FileWriter NamesFileOutput = new FileWriter(ItemDir + "/ItemsNames.txt", true);
+		File NamesFileInput = new File(ItemDir + "/ItemsNames.txt" );
+		PrintWriter outputNames =  new PrintWriter(NamesFileOutput); // comment that if you don't want to write (test the reading function only)
+		do{
+			try{
+				addItem(outputNames, ItemDir);
+			}
+			catch(FileNotFoundException ex){
+				System.out.println("file not found");
+			} 
+			System.out.println("add more? (Y/N)");
+			char addMore = scan.next().charAt(0);
+			if(addMore == 'n' || addMore == 'N')
 				break;
-			else
-				scan.nextLine();// consume rest of that line including newline (needed after nextDouble Int ...etc)
-				++i;
-		}while(true); // comment that if you don't want to write (test the reading function only)
+		}while(true);
+		outputNames.close(); 
+		try{
+			copyItems(NamesFileInput, ItemDir, ItemsArray);			
+		}
+		catch(FileNotFoundException ex){
+			System.out.println("file not found");
+		} 
 		
-		outputNames.close(); // comment that if you don't want to write (test the reading function only)
-		ArrayList<Item> newArray = new ArrayList<>();
+		showItems(ItemsArray);
+		
+		
+		// copyItems(NamesFileInput, ItemDir, ItemsArray);
+		
+		// showItems(ItemsArray);
 		
 		
 		
-		Scanner inputNames = new Scanner(NamesFile);
+		
+		
+		// while(inputNames.hasNext()){
+			// File itemFile = new File(ItemDir + "/" + inputNames.nextLine() + ".txt");
+			// Scanner itemNameScanner = new Scanner(itemFile);
+			// newArray.add(new Item(itemNameScanner.nextLine(), //using the reading constructor (without incrementing the lastID)
+								  // Double.parseDouble(itemNameScanner.nextLine()), 
+								  // itemNameScanner.nextLine(), 
+								  // itemNameScanner.nextLine(), 
+								  // Integer.parseInt(itemNameScanner.nextLine())));
+		// }
+		
+		// System.out.println();
+		// System.out.println();
+		// System.out.println();
+		// for(int j = 0; j < newArray.size(); ++j){
+			// System.out.println("Item number: " + (j + 1));
+			// System.out.println(newArray.get(j));
+			// System.out.println("------------------------");
+		// }
+		
+		// System.out.println(Item.getLastID());
+		
+		
+		
+		
+	}
+	
+	static void addItem(PrintWriter outputNames, File ItemDir) throws FileNotFoundException{
+		Scanner scan = new Scanner(System.in);
+		
+		System.out.println("Enter the item information: (when done, enter stop)");
+		System.out.print("Enter item Name: ");
+		String itemName = scan.nextLine();
+		
+		System.out.print("Enter item Price: ");
+		double itemPrice = scan.nextDouble();
+		
+		scan.nextLine(); // consume rest of that line including newline (needed after nextDouble Int ...etc)
+		
+		System.out.print("Enter item Description: ");
+		String itemDescription = scan.nextLine();
+		
+		System.out.print("Enter item Type: ");
+		String itemType = scan.nextLine();
+		String copy = null;
+		Item movingItem = new Item(itemName, itemPrice, itemDescription, itemType, copy);
+		
+		itemName = itemName.replace(' ', '_');
+		
+		outputNames.println(itemName);
+		
+		
+		File itemFile = new File(ItemDir + "/" + itemName + ".txt");
+		PrintWriter outputItem =  new PrintWriter(itemFile);
+		outputItem.println(movingItem);
+		outputItem.close();
+	}
+	
+	static void copyItems(File NamesFileInput, File ItemDir, ArrayList<Item> ItemsArray) throws FileNotFoundException{
+		Scanner inputNames = new Scanner(NamesFileInput);
 		while(inputNames.hasNext()){
-			File itemFile = new File(inputNames.nextLine() + ".txt");
+			File itemFile = new File(ItemDir + "/" + inputNames.nextLine() + ".txt");
 			Scanner itemNameScanner = new Scanner(itemFile);
-			newArray.add(new Item(itemNameScanner.nextLine(), Double.parseDouble(itemNameScanner.nextLine()), itemNameScanner.nextLine(), itemNameScanner.nextLine()));
+			ItemsArray.add(new Item(itemNameScanner.nextLine(), //using the reading constructor (without incrementing the lastID)
+								  Double.parseDouble(itemNameScanner.nextLine()), 
+								  itemNameScanner.nextLine(), 
+								  itemNameScanner.nextLine()));
 		}
-		
-		for(int j = 0; j < newArray.size(); ++j){
-			
-			System.out.println(newArray.get(j));
-			System.out.println("------------------------");
+	}
+	
+	static void showItems(ArrayList<Item> ItemsArray){
+		Scanner scan = new Scanner(System.in);
+		System.out.println("which item you want to show?: (enter its number)");
+		for(int i = 0; i < ItemsArray.size(); ++i){
+			System.out.println((i + 1) + "# " + ItemsArray.get(i).getItemName());
 		}
-		
-		
-		
+		int itemChoice = scan.nextInt() - 1;
+		System.out.println("Name: " + ItemsArray.get(itemChoice).getItemName()); 
+		System.out.println("ID: " + ItemsArray.get(itemChoice).getItemID());
+		System.out.println("Price: $" + ItemsArray.get(itemChoice).getItemPrice());
+		System.out.println("Type: " + ItemsArray.get(itemChoice).getItemType());
+		System.out.println("Description: " + ItemsArray.get(itemChoice).getitemDescription());
+		System.out.println("Availability: " + ItemsArray.get(itemChoice).getAvailability());
 	}
 }

@@ -11,7 +11,11 @@ public class Item{
 		lastID++;
 	}
 	
-	public Item(String itemName, double itemPrice, String itemDescription, String itemType){
+	public Item(String itemName, 
+				double itemPrice, 
+				String itemDescription, 
+				String itemType){
+					
 		this.itemName = itemName;
 		this.itemPrice = itemPrice;
 		this.itemDescription = itemDescription;
@@ -19,6 +23,19 @@ public class Item{
 		lastID++;
 		itemID = lastID;
 	}
+	
+	public Item(String itemName, // using to read from files without adding 1 to last id
+				double itemPrice, 
+				String itemDescription, 
+				String itemType,
+				String copy){
+					
+		this.itemName = itemName;
+		this.itemPrice = itemPrice;
+		this.itemDescription = itemDescription;
+		this.itemType = itemType;
+	}
+	
 	
 	public static int getLastID(){
 		return lastID;
@@ -64,9 +81,12 @@ public class Item{
 		return itemType;
 	}
 	
+	public String getitemDescription(){
+		return itemDescription;
+	}
 	@Override
 	public String toString(){
-		return ("Item: "+itemName + ". Price: " + itemPrice + " RM. Description: " + itemDescription + ". Type: " + itemType +". ");
+		return (itemName + "\n" + itemPrice + "\n" + itemDescription + "\n" + itemType);
 	}
 	
 }
