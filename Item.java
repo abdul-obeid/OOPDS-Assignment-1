@@ -86,6 +86,10 @@ public class Item{
 	}
 	@Override
 	public String toString(){
+		return ("Item: "+itemName + ". Price: " + itemPrice + " RM. Description: " + itemDescription + ". Type: " + itemType +". ");
+	}
+	
+	public String writeToFile(){
 		return (itemName + "\n" + itemPrice + "\n" + itemDescription + "\n" + itemType);
 	}
 	
