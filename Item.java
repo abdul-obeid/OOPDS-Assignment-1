@@ -8,27 +8,28 @@ public class Item{
 	private boolean availability = true;
 	
 	public Item(){
-		lastID++;
+		// lastID++;
 	}
 	
 	public Item(String itemName, 
 				double itemPrice, 
 				String itemDescription, 
-				String itemType){
+				String itemType,
+				boolean availability
+				){
 					
 		this.itemName = itemName;
 		this.itemPrice = itemPrice;
 		this.itemDescription = itemDescription;
 		this.itemType = itemType;
-		lastID++;
-		itemID = lastID;
+		this.availability = availability;
+		itemID = lastID++;
 	}
 	
-	public Item(String itemName, // using to read from files without adding 1 to last id
+	public Item(String itemName, // use this constructor to write new items to the files without incrementing the lastID,
 				double itemPrice, 
 				String itemDescription, 
-				String itemType,
-				String copy){
+				String itemType){
 					
 		this.itemName = itemName;
 		this.itemPrice = itemPrice;
@@ -81,16 +82,21 @@ public class Item{
 		return itemType;
 	}
 	
-	public String getitemDescription(){
+	public String getItemDescription(){
 		return itemDescription;
 	}
+	
 	@Override
 	public String toString(){
 		return ("Item: "+itemName + ". Price: " + itemPrice + " RM. Description: " + itemDescription + ". Type: " + itemType +". ");
 	}
 	
 	public String writeToFile(){
-		return (itemName + "\n" + itemPrice + "\n" + itemDescription + "\n" + itemType);
+		return (itemName + "\n" + itemPrice + "\n" + itemDescription + "\n" + itemType + "\n" + availability);
+	}
+	
+	public String writeToOrder(){
+		return (itemName + "\n" + itemPrice + "\n" + itemDescription + "\n" + itemType );
 	}
 	
 }

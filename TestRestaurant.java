@@ -10,7 +10,7 @@ public class TestRestaurant{
 		
 		
 		try{
-			Restaurant r = new Restaurant("Pizza", "0123456789", "When the craving hits, and believe that it will, you will go to great lengths to be able to enjoy a Fricano's pizza just one more time.", "29 Jalan Riong, Bangsar, Kuala Lumpur, MY 59100");
+			Restaurant r = new Restaurant("Pizza Palace", "0123456789", "When the craving hits, and believe that it will, you will go to great lengths to be able to enjoy a Fricano's pizza just one more time.", "29 Jalan Riong, Bangsar, Kuala Lumpur, MY 59100");
 	
 			
 		
