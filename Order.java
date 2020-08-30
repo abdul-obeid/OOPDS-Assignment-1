@@ -18,26 +18,27 @@ public class Order {
     File cusDir = new File("Customer\\"); // + cusUsername
     File resDir = new File("Restaurant\\" ); //+ resName
 
-    public static void replaceLines(File f, String replacementLine, int lineNumber) {         //Used to edit lines in text files
-        try {
-           ///// notepad code goes here
-
-            Scanner readFile = new Scanner(f);
-            ArrayList <String> fileLines = new ArrayList<String>();
-            while (readFile.hasNextLine()) {
-                fileLines.add(readFile.nextLine());
-            }
-            Object [] lineArray = fileLines.toArray();
-            lineArray[lineNumber-1] = replacementLine;
-            PrintWriter writeFile = new PrintWriter(f);
-            for (Object o : lineArray) {
-                writeFile.println(o);
-            }
-        } catch (Exception e) {
-            System.out.println("Problem reading file.");
+    public static void replaceLines(File f, String replacementString, int lineNumber)  throws IOException {         //Used to edit lines in text files
+        StringBuffer replacementLine = new StringBuffer(replacementString);
+        Scanner readFile = new Scanner(f);
+        ArrayList <String> fileLines = new ArrayList<String>(); //ArrayList where lines are stored; line number corresponds with index number
+        while (readFile.hasNextLine()) {            //copies file contents into arraylist
+            fileLines.add(readFile.nextLine());
         }
-
-
+        Object [] lineArray = fileLines.toArray();
+        lineArray[lineNumber-1] = replacementLine;  // Replaces desired line
+        PrintWriter clearFile = new PrintWriter(f); //clears old file contents
+        clearFile.print("");
+        clearFile.close();
+        
+        PrintWriter printFile = new PrintWriter(f);     
+        StringBuffer output = new StringBuffer("");
+        for (int i = 0; i<lineArray.length; i++) {      //Combines new lines into a StringBuffer
+            output.append(lineArray[i]);
+            output.append("\n");
+        }
+        printFile.println(output);      //Prints combined StringBuffer to file
+        printFile.close();
     }
 
     public void createCusFiles(int orderID, String cusUsername, String resName, ArrayList<Item> orderContents, String orderStatus, double orderPrice) throws IOException{
