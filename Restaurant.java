@@ -1,24 +1,21 @@
 import java.util.*;
 import java.io.*;
 
-public class Restaurant{
+public class Restaurant extends User{
 	private String name;
-	private String userName;
 	private Menu menu;
-	private String password;
 	private String description;
 	private ArrayList<Order> currentOrders = new ArrayList<>();
 	private ArrayList<Order> pastOrders = new ArrayList<>();
 	private String address;
 	File restDir;
-	public Restaurant(){
+	// public Restaurant(){
 		
-	}
+	// }
 	
-	public Restaurant(String name,String userName, String password, String description, String address) {
+	public Restaurant(String name,String username, String password, String description, String address) {
+		super(username, password);
 		this.name = name;
-		this.userName = userName;
-		this.password = password;
 		this.description = description;
 		this.address = address;
 		try{
@@ -35,8 +32,8 @@ public class Restaurant{
 		File restaurantInfo = new File(restDir + "/basicInfo.txt");
 		PrintWriter outputRestInfo =  new PrintWriter(restaurantInfo); // comment that if you don't want to write (test the reading function only)
 		outputRestInfo.println(name);
-		outputRestInfo.println(userName);
-		outputRestInfo.println(password);
+		outputRestInfo.println(getUsername());
+		outputRestInfo.println(getPassword());
 		outputRestInfo.println(description);
 		outputRestInfo.println(address);
 		outputRestInfo.close();
@@ -49,9 +46,7 @@ public class Restaurant{
 		this.menu = menu;
 	
 	}
-	public void setPassword(String password){
-		this.password = password;
-	}
+	
 	
 	public void setAddress(String adress){
 		this.address= address;
@@ -61,9 +56,6 @@ public class Restaurant{
 		return name;
 	}
 	
-	public String getPassword(){
-		return password;
-	}
 	
 	public Menu getMenu(){
 		return menu;
@@ -74,31 +66,44 @@ public class Restaurant{
 	}
 
 	public ArrayList<Order> getCurrentOrders(){
-		try{
-			readCurrentOrdersFromFiles();
-			
-		}
-		catch(IOException ex){
-			System.out.println(ex.getMessage());
-		}
 		return currentOrders;
 	}
 	
+	public void addToCurrentOrders(Order o){
+		
+	}
+	
 	public ArrayList<Order> getPastOrders(){
+		try{
+			readOrderHistoryFromFiles();
+		}
+		catch(IOException ex){
+			System.out.println("File not found: " + ex.getMessage());
+		}
 		return pastOrders;
 	}
 	
-	// private void readCurrentOrdersFromFiles() throws IOException{
-		// currentOrders.clear(); // clear the menuContents to avoid redundant items
-		// File currentOrdersFileInput = new File(restDir + "/Order/names.txt" );
-		// Scanner inputOrders = new Scanner(currentOrdersFileInput);
-		// while(inputOrders.hasNext()){
-			// File orderFile = new File(restDir + "/Order/" + inputOrders.nextLine() + ".txt");
-			Scanner OrderNameScanner = new Scanner(orderFile);
-			// currentOrders.add(new Order(orderFile));
-		// }
-		// inputOrders.close();
-	// }
+	private void readOrderHistoryFromFiles() throws IOException{
+		pastOrders.clear(); // clear the menuContents to avoid redundant items
+		File pastOrdersFileInput = new File(restDir + "/Order/names.txt" );
+		Scanner inputOrders = new Scanner(pastOrdersFileInput);
+		while(inputOrders.hasNext()){
+			File orderFile = new File(restDir + "/Order/" + inputOrders.nextLine() + ".txt");
+			// Scanner OrderNameScanner = new Scanner(orderFile);
+			pastOrders.add(new Order(orderFile));
+		}
+		inputOrders.close();
+	}
+	public String toString(){
+		return "edit me";
+	}
 	
+	public  boolean validateLogin(String userAttempt, String passwordAttempt){
+		if(userAttempt.equals(getUsername()) && passwordAttempt.equals(getPassword()))
+			return true;
+		else
+			return false;
+	}
+
 	
 }
