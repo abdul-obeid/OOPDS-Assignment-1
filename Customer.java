@@ -38,8 +38,8 @@ public class Customer extends User {
         }
     }
 
-    public boolean validateLogin(String userAttempt, String passwordAttempt){
-        
+    public boolean validateLogin(String userAttempt, String passwordAttempt){       ///////TO-DO adjust login
+        return true;
     }
     public String getName() {
         return this.name;
