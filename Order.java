@@ -37,7 +37,7 @@ public class Order {
         outputCusOrder.println(orderStatus);
         outputCusOrder.println(orderPrice);
         for (int i = 0; i< orderContents.size(); i++) {
-            outputCusOrder.println(orderContents.get(i).writeToFile()); //Writes item information to file
+            outputCusOrder.println(orderContents.get(i).writeToOrder()); //Writes item information to file
         }
         outputCusOrder.close();
 
@@ -57,14 +57,14 @@ public class Order {
         outputResOrder.println(orderStatus);
         outputResOrder.println(orderPrice);
         for (int i = 0; i< orderContents.size(); i++) {
-            outputResOrder.println(orderContents.get(i).writeToFile()); //Writes item information to file
+            outputResOrder.println(orderContents.get(i).writeToOrder()); //Writes item information to file
         }
         outputResOrder.close();
 	}
 
     //CONSTRUCTORS
 
-    public Order() {}   //Default constructor
+    public Order() {}   //Default constructor               ////////////Make lastID
         
     public Order(String newCusUsername, String newResName, ArrayList<Item> newContents) throws IOException{  //Constructor for new orders
         this.orderID = ++lastID;
@@ -74,12 +74,26 @@ public class Order {
             this.orderContents.add(i);
             this.orderPrice += i.getItemPrice();
         }
-        this.orderStatus = "Sent";
+        this.orderStatus = "Preparing";
         this.timeRequested = new Date(); //Sets timeRequested to the current time
         createOrderFile(this.orderID, this.cusUsername, this.resName, this.orderContents, this.orderStatus, this.orderPrice);
     }
-    public Order(String filePath) throws IOException { //Constructor for orders in file
+    public Order(String filePath) throws IOException {      //Constructor for orders from filepath
         Scanner orderInfo = new Scanner(new File(filePath));
+        this.orderID = Integer.parseInt(orderInfo.nextLine());
+        this.cusUsername = orderInfo.nextLine();
+        this.resName = orderInfo.nextLine();
+        this.orderStatus = orderInfo.nextLine();
+        this.orderPrice = Double.parseDouble(orderInfo.nextLine());
+
+        while (orderInfo.hasNext()) {       // Creates items from file
+            this.orderContents.add(new Item(orderInfo.nextLine(),Double.parseDouble(orderInfo.nextLine()),orderInfo.nextLine(),orderInfo.nextLine())); 
+        }
+        orderInfo.close();
+    }
+
+    public Order(File newFile) throws IOException { //Constructor for orders from file object
+        Scanner orderInfo = new Scanner(newFile);
         this.orderID = Integer.parseInt(orderInfo.nextLine());
         this.cusUsername = orderInfo.nextLine();
         this.resName = orderInfo.nextLine();

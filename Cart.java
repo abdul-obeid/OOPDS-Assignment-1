@@ -26,6 +26,6 @@ public class Cart {
         for (Item i : chosenItems){
             contents.concat(i.getItemName()+". ");
         }
-        return ("Shopping cart contents: "+ contents + ". Total price: "+totalPrice+". ");
+        return ( "Total price: " +totalPrice+". " + "Shopping cart contents: "+ contents + ". ");
     }
 }

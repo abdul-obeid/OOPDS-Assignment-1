@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Customer {
+public class Customer extends User {
     private String name;
     private String username;
     private String password;
@@ -38,7 +38,9 @@ public class Customer {
         }
     }
 
-
+    public boolean validateLogin(String userAttempt, String passwordAttempt){
+        
+    }
     public String getName() {
         return this.name;
     }
