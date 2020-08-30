@@ -3,6 +3,7 @@ import java.io.*;
 
 public class Restaurant{
 	private String name;
+	private String userName;
 	private Menu menu;
 	private String password;
 	private String description;
@@ -14,14 +15,15 @@ public class Restaurant{
 		
 	}
 	
-	public Restaurant(String name, String password, String description, String address) {
+	public Restaurant(String name,String userName, String password, String description, String address) {
 		this.name = name;
+		this.userName = userName;
 		this.password = password;
 		this.description = description;
 		this.address = address;
 		try{
 			sendRestToFile();
-			menu = new Menu(restDir);
+			menu = new Menu(name, restDir);
 		}
 		catch(IOException ex){
 			System.out.println(ex.getMessage());
@@ -33,6 +35,7 @@ public class Restaurant{
 		File restaurantInfo = new File(restDir + "/basicInfo.txt");
 		PrintWriter outputRestInfo =  new PrintWriter(restaurantInfo); // comment that if you don't want to write (test the reading function only)
 		outputRestInfo.println(name);
+		outputRestInfo.println(userName);
 		outputRestInfo.println(password);
 		outputRestInfo.println(description);
 		outputRestInfo.println(address);
@@ -71,12 +74,31 @@ public class Restaurant{
 	}
 
 	public ArrayList<Order> getCurrentOrders(){
+		try{
+			readCurrentOrdersFromFiles();
+			
+		}
+		catch(IOException ex){
+			System.out.println(ex.getMessage());
+		}
 		return currentOrders;
 	}
 	
 	public ArrayList<Order> getPastOrders(){
 		return pastOrders;
 	}
+	
+	// private void readCurrentOrdersFromFiles() throws IOException{
+		// currentOrders.clear(); // clear the menuContents to avoid redundant items
+		// File currentOrdersFileInput = new File(restDir + "/Order/names.txt" );
+		// Scanner inputOrders = new Scanner(currentOrdersFileInput);
+		// while(inputOrders.hasNext()){
+			// File orderFile = new File(restDir + "/Order/" + inputOrders.nextLine() + ".txt");
+			Scanner OrderNameScanner = new Scanner(orderFile);
+			// currentOrders.add(new Order(orderFile));
+		// }
+		// inputOrders.close();
+	// }
 	
 	
 }
