@@ -1,5 +1,8 @@
 import java.util.ArrayList;
 import java.io.IOException;
+import java.util.*;
+import java.io.*;
+
 public class TestOrder {
 
     public static void main(String [] args) {
@@ -27,11 +30,13 @@ public class TestOrder {
         Order o2 = new Order("debacle11", "Pizza Palace", sampleShoppingCart);
         Order o3 = new Order("gusman95", "Pizza Palace", sampleShoppingCart);
         Order o4 = new Order("gusman95", "Pizza Palace", sampleShoppingCart);
+        //Order.replaceLines(new File("C:\\Users\\thesc\\OneDrive\\Documents\\GitHub\\OOPDS-Assignment-1\\Customer\\gusman95\\Order\\names.txt"), "lastID = 12356", 1);
         System.out.println(o1);
-        //System.out.println("Time requested: " + o1.getTimeRequested() +". ");
         System.out.println(o2);
-
-        } catch (Exception e) { System.out.println("Error order" + e); }
+        System.out.println(o3);
+        System.out.println(o4);
+        
+        } catch (Exception e) { System.out.println("Error" + e); }
         
     }
     
