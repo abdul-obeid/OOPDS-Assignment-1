@@ -3,8 +3,8 @@ import java.util.*;
 
 public class Customer extends User {
     private String name;
-    private String username;
-    private String password;
+    // private String username;
+    // private String password;
     private Order currentOrder;
     private ArrayList<Order> pastOrders = new ArrayList<Order>();
     File cusDir;
@@ -19,18 +19,20 @@ public class Customer extends User {
         outputCusInfo.println(password);
 		outputCusInfo.close();
 	}
-    public Customer() {}
+    public Customer() {
+        super(null, null);
+    }
     public Customer(String newName, String newUsername, String newPassword) throws IOException{ //Constructor used for registration
+        super(newUsername, newPassword);
         this.name = newName;
-        this.username = newUsername;
-        this.password = newPassword;
         createCusFile(newName, newUsername, newPassword);
     }
     public Customer(String cusUsername) throws IOException {   //Constructor used for login
+        super(null, null);
         Scanner cusInfo = new Scanner(new File("Customer\\"+ cusUsername + "\\info.txt"));
         this.name = cusInfo.nextLine();
-        this.username = cusInfo.nextLine();
-        this.password = cusInfo.nextLine();
+        this.setUsername(cusInfo.nextLine());
+        this.setPassword(cusInfo.nextLine());
         Scanner orderNameTxt = new Scanner(new File("Customer\\"+cusUsername+"\\Order\\names.txt"));
         while (orderNameTxt.hasNext()) {
             String orderNames = orderNameTxt.nextLine();
@@ -47,35 +49,18 @@ public class Customer extends User {
     public void setName(String newName) {
         this.name = newName;
     }
-    public String getUserame() {
-        return this.username;
-    }
-    public void setUsername(String newUser) {
-        this.username = newUser;
-    }
-    public String getPassword() {
-        return this.password;
-    }
-    
-    public void setPassword(String newPass) {
-        this.password = newPass;
-    }
-
     public Order getCurrentOrder() {
         return this.currentOrder;
     }
-
     public void setCurrentOrder(Order newOrder) {
         this.currentOrder = newOrder;
     }
-
     public ArrayList<Order> getPastOrders() {
         return this.pastOrders;
     }
 
-
     @Override
     public String toString() {
-        return ("Customer name: " + this.name + ". Username: " + this.username+". ");
+        return ("Customer name: " + this.name + ". Username: " + this.getUsername()+". ");
     }
 }

@@ -33,6 +33,8 @@ public class Home {
             input.nextLine();
         }
     } while (true);
+    
+
     }
 
     // public void choose (int role) throws InputMismatchException{
