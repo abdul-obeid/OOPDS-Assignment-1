@@ -18,9 +18,30 @@ public class Order {
     File cusDir = new File("Customer\\"); // + cusUsername
     File resDir = new File("Restaurant\\" ); //+ resName
 
+    public static void replaceLines(File f, String replacementLine, int lineNumber) {         //Used to edit lines in text files
+        try {
+           ///// notepad code goes here
 
-    public void createOrderFile(int orderID, String cusUsername, String resName, ArrayList<Item> orderContents, String orderStatus, double orderPrice) throws IOException{
-        
+            Scanner readFile = new Scanner(f);
+            ArrayList <String> fileLines = new ArrayList<String>();
+            while (readFile.hasNextLine()) {
+                fileLines.add(readFile.nextLine());
+            }
+            Object [] lineArray = fileLines.toArray();
+            lineArray[lineNumber-1] = replacementLine;
+            PrintWriter writeFile = new PrintWriter(f);
+            for (Object o : lineArray) {
+                writeFile.println(o);
+            }
+        } catch (Exception e) {
+            System.out.println("Problem reading file.");
+        }
+
+
+    }
+
+    public void createCusFiles(int orderID, String cusUsername, String resName, ArrayList<Item> orderContents, String orderStatus, double orderPrice) throws IOException{
+
         new File(cusDir + "\\" + cusUsername + "\\Order\\").mkdirs();                                              // code for making order file in restaurant directory
         File cusOrderNames = new File(cusDir + "\\" + cusUsername + "\\Order\\"+"names.txt"); //Adds order filename to names.txt file. Used to fetch order file names later.
         FileWriter cusOrderNamesFileWriter = new FileWriter(cusOrderNames, true);
@@ -40,6 +61,36 @@ public class Order {
             outputCusOrder.println(orderContents.get(i).writeToOrder()); //Writes item information to file
         }
         outputCusOrder.close();
+
+    }
+
+
+    public void createResFiles(int orderID, String cusUsername, String resName, ArrayList<Item> orderContents, String orderStatus, double orderPrice) throws IOException{
+        
+        new File(resDir + "\\" + resName + "\\Order\\").mkdirs();                                              // code for making order file in restaurant directory
+        File orderNames = new File(resDir + "\\" + resName + "\\Order\\"+"names.txt"); //Adds order filename to names.txt file. Used to fetch order file names later.
+        FileWriter orderNamesFileWriter = new FileWriter(orderNames, true);
+        PrintWriter orderNamesWriter = new PrintWriter(orderNamesFileWriter);
+        orderNamesWriter.println(cusUsername+"_"+ orderID);
+        orderNamesWriter.close();
+
+		File resOrder = new File(resDir + "\\"+resName+"\\Order\\"+cusUsername+"_"+ orderID +".txt");
+		PrintWriter outputResOrder =  new PrintWriter(resOrder);
+        outputResOrder.println(orderID);
+        outputResOrder.println(cusUsername);
+        outputResOrder.println(resName);
+        outputResOrder.println(orderStatus);
+        outputResOrder.println(orderPrice);
+        for (int i = 0; i< orderContents.size(); i++) {
+            outputResOrder.println(orderContents.get(i).writeToOrder()); //Writes item information to file
+        }
+        outputResOrder.close();
+    }
+
+
+
+    public void createOrderFiles(int orderID, String cusUsername, String resName, ArrayList<Item> orderContents, String orderStatus, double orderPrice) throws IOException{
+        
 
         
         new File(resDir + "\\" + resName + "\\Order\\").mkdirs();                                              // code for making order file in restaurant directory
@@ -76,7 +127,7 @@ public class Order {
         }
         this.orderStatus = "Preparing";
         this.timeRequested = new Date(); //Sets timeRequested to the current time
-        createOrderFile(this.orderID, this.cusUsername, this.resName, this.orderContents, this.orderStatus, this.orderPrice);
+        createOrderFiles(this.orderID, this.cusUsername, this.resName, this.orderContents, this.orderStatus, this.orderPrice);
     }
     public Order(String filePath) throws IOException {      //Constructor for orders from filepath
         Scanner orderInfo = new Scanner(new File(filePath));
