@@ -5,7 +5,7 @@ public class Order {
     //ATTRIBUTES
 
     private int orderID;           //Unique order ID
-    private static int lastID = 0; //Keeps track of last-used orderID to allow each order to have a unique ID.
+    private static int lastID; //Keeps track of last-used orderID to allow each order to have a unique ID.
     private String cusUsername;    //Customer username
     private String resName;        //Restaurant name
     private ArrayList<Item> orderContents = new ArrayList<Item>();  //ArrayList containing order items
@@ -15,8 +15,42 @@ public class Order {
     private Date timeReady;                     //Time when the restaurant finished preparing order
     private Date timeCollected;                 //Time when customer collected order
 
-    File cusDir = new File("Customer\\"); // + cusUsername
-    File resDir = new File("Restaurant\\" ); //+ resName
+    static File cusDir = new File("Customer\\"); // + cusUsername
+    static File resDir = new File("Restaurant\\" ); //+ resName
+
+
+    public static void saveLastID() throws IOException {
+        new File(cusDir + "\\lastID.txt").mkdirs();
+        File lastIDTxt = new File(cusDir + "\\lastID.txt");
+        PrintWriter lastIDPrintWriter = new PrintWriter(lastIDTxt);
+        lastIDPrintWriter.println(lastID);
+        lastIDPrintWriter.close();
+    }
+    public static int getLastID(File f) throws IOException {
+        if (f.exists()){
+            Scanner readLastID = new Scanner(f);
+            if (readLastID.hasNextLine()) {
+                return Integer.parseInt(readLastID.nextLine());
+            }
+            else {
+                // FileWriter lastIDFileWriter = new FileWriter(f);
+                PrintWriter lastIDPrintWriter = new PrintWriter(f);
+                lastIDPrintWriter.println("0");
+                lastIDPrintWriter.close();
+                // lastIDFileWriter.close();
+                return 0; ////////
+            }
+        }
+        else {
+            new File(cusDir + "\\lastID.txt").mkdirs();
+            File lastIDTxt = new File(cusDir + "\\lastID.txt");
+            lastIDTxt.createNewFile();
+            PrintWriter lastIDPrintWriter = new PrintWriter(lastIDTxt);
+            lastIDPrintWriter.println("0");
+            lastIDPrintWriter.close();
+            return 0;
+        }
+    }
 
     public static void replaceLines(File f, String replacementString, int lineNumber)  throws IOException {         //Used to edit lines in text files
         StringBuffer replacementLine = new StringBuffer(replacementString);
@@ -25,6 +59,7 @@ public class Order {
         while (readFile.hasNextLine()) {            //copies file contents into arraylist
             fileLines.add(readFile.nextLine());
         }
+        readFile.close();
         Object [] lineArray = fileLines.toArray();
         lineArray[lineNumber-1] = replacementLine;  // Replaces desired line
         PrintWriter clearFile = new PrintWriter(f); //clears old file contents
@@ -92,26 +127,8 @@ public class Order {
 
     public void createOrderFiles(int orderID, String cusUsername, String resName, ArrayList<Item> orderContents, String orderStatus, double orderPrice) throws IOException{
         
-
-        
-        new File(resDir + "\\" + resName + "\\Order\\").mkdirs();                                              // code for making order file in restaurant directory
-        File orderNames = new File(resDir + "\\" + resName + "\\Order\\"+"names.txt"); //Adds order filename to names.txt file. Used to fetch order file names later.
-        FileWriter orderNamesFileWriter = new FileWriter(orderNames, true);
-        PrintWriter orderNamesWriter = new PrintWriter(orderNamesFileWriter);
-        orderNamesWriter.println(cusUsername+"_"+ orderID);
-        orderNamesWriter.close();
-
-		File resOrder = new File(resDir + "\\"+resName+"\\Order\\"+cusUsername+"_"+ orderID +".txt");
-		PrintWriter outputResOrder =  new PrintWriter(resOrder);
-        outputResOrder.println(orderID);
-        outputResOrder.println(cusUsername);
-        outputResOrder.println(resName);
-        outputResOrder.println(orderStatus);
-        outputResOrder.println(orderPrice);
-        for (int i = 0; i< orderContents.size(); i++) {
-            outputResOrder.println(orderContents.get(i).writeToOrder()); //Writes item information to file
-        }
-        outputResOrder.close();
+        createCusFiles(orderID, cusUsername, resName, orderContents,orderStatus, orderPrice);
+        createResFiles(orderID, cusUsername, resName, orderContents, orderStatus, orderPrice);
 	}
 
     //CONSTRUCTORS
@@ -119,7 +136,13 @@ public class Order {
     public Order() {}   //Default constructor               ////////////Make lastID
         
     public Order(String newCusUsername, String newResName, ArrayList<Item> newContents) throws IOException{  //Constructor for new orders
+        File f = new File(cusDir + "\\lastID.txt");
+        if(!(f.exists()))
+            f.createNewFile();
+        setLastID(getLastID(f));
+        System.out.println(getLastID()); ////////
         this.orderID = ++lastID;
+        saveLastID();
         this.cusUsername = newCusUsername;
         this.resName = newResName;
         for (Item i:newContents){    //Copies newContents into orderContents
@@ -131,6 +154,12 @@ public class Order {
         createOrderFiles(this.orderID, this.cusUsername, this.resName, this.orderContents, this.orderStatus, this.orderPrice);
     }
     public Order(String filePath) throws IOException {      //Constructor for orders from filepath
+        File f = new File(cusDir + "\\lastID.txt");
+        if(!(f.exists()))
+            f.createNewFile();
+        setLastID(getLastID(new File(cusDir + "\\lastID.txt")));
+        this.orderID = ++lastID;
+        saveLastID();
         Scanner orderInfo = new Scanner(new File(filePath));
         this.orderID = Integer.parseInt(orderInfo.nextLine());
         this.cusUsername = orderInfo.nextLine();
@@ -145,6 +174,12 @@ public class Order {
     }
 
     public Order(File newFile) throws IOException { //Constructor for orders from file object
+        File f = new File(cusDir + "\\lastID.txt");
+        if(!(f.exists()))
+            f.createNewFile();
+        setLastID(getLastID(new File(cusDir + "\\lastID.txt")));
+        this.orderID = ++lastID;
+        saveLastID();
         Scanner orderInfo = new Scanner(newFile);
         this.orderID = Integer.parseInt(orderInfo.nextLine());
         this.cusUsername = orderInfo.nextLine();
@@ -200,6 +235,9 @@ public class Order {
     public static int getLastID() {
         return lastID;
     }   
+    public static void setLastID(int newID) {
+        lastID = newID;
+    }
     
     // TOSTRING METHOD
 
