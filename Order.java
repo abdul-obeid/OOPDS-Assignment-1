@@ -251,4 +251,14 @@ public class Order {
         return "Order# " + orderID +". Ordered by " + cusUsername
         + " from restaurant " + resName + ". Order status: " + orderStatus;
     }
+
+    public String toStringHistory() {
+        StringBuffer or = new StringBuffer("Order# " + orderID +". Ordered by " + cusUsername + " from restaurant " + resName + ". Order status: " + orderStatus);
+        or.append("\nContents: ")
+        for (Item i: this.getOrderContents()) {
+            or.append(i.toString() + "\n");
+        }
+        return or.toString();
+
+    }
 }

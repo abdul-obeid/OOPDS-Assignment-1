@@ -7,7 +7,7 @@ public class Customer extends User {
     // private String password;
     private Order currentOrder;
     private ArrayList<Order> pastOrders = new ArrayList<Order>();
-    File cusDir;
+    public File cusDir;
 
     public void createCusFile(String name, String username, String password ) throws IOException{
         cusDir = new File("Customer\\" + username +"\\");

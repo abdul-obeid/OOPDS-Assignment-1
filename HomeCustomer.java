@@ -226,31 +226,44 @@ public class HomeCustomer {
         }
     }
 
-    public void ui7(Customer c) {
+    public void ui7(Customer c) throws IOException{
+        File cusOrders = new File("Customer\\" + c.getUsername() + "\\Order\\names.txt")
+        Scanner cusOrdersReader = new Scanner(cusOrders);
+        while (cusOrdersReader.hasNext()){
+            Order o = new Order("Customer\\" + c.getUsername() + "\\Order\\" + cusOrdersReader.nextLine());
+            System.out.println(o.toStringHistory());
+        }
+
+        System.out.println("\nEnter anything to go back to previous menu. "); 
         Scanner input = new Scanner(System.in);
-        int choice = input.nextInt();
-        if (choice == 1) {
+        input.next();
+        ui4(c);
 
-        }
-        else if (choice == 2) {
-
-        }
-        else if (choice == 3) {
-            
-        }
-    }
+        }    
 
     public void ui8(Customer c, Restaurant r) {
+        System.out.println("Welcome to " + r.getName()+". "); /////////Maybe add ASCII art name here
+        System.out.println(r.getDescription());
+
+        Cart shoppingCart = new Cart()
+        System.out.println("Select items to add to shopping cart");
+
+        int menuChoices = 1;
+        for (Item i : r.getMenu().getMenuContents()){
+            System.out.println(menuChoices + ". " + i.getItemName()+"        "+i.getItemType()+"        "+i.getItemPrice()
+            menuChoices++;
+        }
+        System.out.println(menuChoices++ + ". View shopping cart ");
+        System.out.println(menuChoices + ". Back to restaurant ");
+
         Scanner input = new Scanner(System.in);
         int choice = input.nextInt();
-        if (choice == 1) {
-
-        }
-        else if (choice == 2) {
-
-        }
-        else if (choice == 3) {
+        if (choice <= menuChoices){
             
+        }
+        else {
+            System.out.println("Error: Please enter one of the available options.")
+            ui8(c, r);
         }
     }
 
