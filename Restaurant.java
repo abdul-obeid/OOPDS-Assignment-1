@@ -69,10 +69,42 @@ public class Restaurant extends User{
 		return currentOrders;
 	}
 	
-	public void addToCurrentOrders(Order o){
-		
+	public void removeFromCurrentOrders(Order o){
+		currentOrders.remove(o);
 	}
-	
+	public void addToCurrentOrders(Order o){
+		currentOrders.add(o);
+	}
+	public void showAndUpdateCurrentOrders(){
+		Scanner scan = new Scanner(System.in);
+		RestaurantUI.clearScreen();
+		if(currentOrders.size() == 0)
+			System.out.print("you have no orders in the meanTime");
+		else{
+			System.out.println();
+			System.out.println();
+			for(int i = 0; i < currentOrders.size(); ++i)
+				System.out.println("\t\t" + currentOrders.get(i));
+			System.out.print("\n\n\t\t" + "choose number of order to show or update: ");
+			int choosenOrder = (scan.nextInt() - 1);
+			RestaurantUI.clearScreen();
+			System.out.println("Order ID: " + currentOrders.get(choosenOrder).getID());
+			System.out.println("Customer Username: " + currentOrders.get(choosenOrder).getCusUsername());
+			System.out.println("Time Requested: " + currentOrders.get(choosenOrder).getTimeRequested());
+			System.out.println("Order Status: " + currentOrders.get(choosenOrder).getOrderStatus());
+			System.out.println("Order Contents: " );
+			for(int i = 0; i < currentOrders.get(choosenOrder).getOrderContents().size(); ++i){
+				System.out.println("\tItem #" + (i+1) + " Name: " + currentOrders.get(choosenOrder).getOrderContents().get(i).getItemName());
+				System.out.println("\tItem ID: " + currentOrders.get(choosenOrder).getOrderContents().get(i).getItemID());
+				System.out.println("\tItem Price: " + currentOrders.get(choosenOrder).getOrderContents().get(i).getItemPrice());
+				System.out.println( );
+			}
+			System.out.println("Total Price: RM" + currentOrders.get(choosenOrder).getOrderPrice());
+			System.out.println("\t\t\t1) Update Order Status");
+			System.out.println("\t\t\t2) Back to Restaurant Dashboard ");
+			int choosenAction = scan.nextInt();
+		}
+	}
 	public ArrayList<Order> getPastOrders(){
 		try{
 			readOrderHistoryFromFiles();
