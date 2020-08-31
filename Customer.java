@@ -40,9 +40,19 @@ public class Customer extends User {
         }
     }
 
-    public boolean validateLogin(String userAttempt, String passwordAttempt){       ///////TO-DO adjust login
-        return true;
+    public  boolean validateLogin(String userAttempt, String passwordAttempt){
+		if(userAttempt.equals(getUsername()) && passwordAttempt.equals(getPassword()))
+			return true;
+		else
+			return false;
     }
+    
+    public Order createNewOrder(Restaurant res, Cart shoppingCart) throws IOException {
+        Order or = new Order(this.getUsername(), res.getName(), shoppingCart.getChosenItems());
+        return or;
+    }
+
+
     public String getName() {
         return this.name;
     }
