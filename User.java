@@ -22,7 +22,7 @@ public abstract class User { //
     public String getPassword() {
         return this.password;
     }
-
+	
 
     public abstract boolean validateLogin(String userAttempt, String passwordAttempt);
 
