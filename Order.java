@@ -225,9 +225,6 @@ public class Order {
     public void setOrderStatus(String newStatus) {
         this.orderStatus = newStatus;
     }
-    public double getOrderPrice(){
-        return orderPrice;
-    }
     public Date getTimeRequested() {
         return timeRequested;
     }

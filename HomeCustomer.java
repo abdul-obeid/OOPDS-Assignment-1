@@ -48,22 +48,6 @@ public class HomeCustomer {
     } while (true);
     }
 
-    static void clearScreen() {
-		try{
-			final String osName = System.getProperty("os.name");
-			if (osName.toLowerCase().contains("windows"))
-				new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-			else
-				new ProcessBuilder("clear").inheritIO().start().waitFor();
-		}
-		catch(IOException ex){
-				System.out.println(ex.getMessage());
-		}
-		catch(InterruptedException ex){
-				System.out.println(ex.getMessage());				
-		}
-	}
-
     public void ui1() throws IOException {
         Scanner input = new Scanner(System.in);
         System.out.println("Please enter the number corresponding with your desired option: ");
@@ -174,55 +158,29 @@ public class HomeCustomer {
 
     public void ui5(Customer c) {
         Scanner input = new Scanner(System.in);
-        System.out.println("Please enter the number corresponding with your desired option: ");
-        System.out.println("1. Pizza Palace ");
-        System.out.println("2. Mishaltit ");
-        System.out.println("3. Mamak Spot ");
-        System.out.println("4. Back to previous menu ");
-
         int choice = input.nextInt();
         if (choice == 1) {
-            Restaurant r = new Restaurant ("Pizza Palace","pizzaPalace01", "0123456789",
-             "Come home to true Italian Pizza at Pizza Palace, we offer a wide range of home-made Italian Pizzas alongside a menu complete with classic and rustic Italian dishes and a variety of cocktails.", "29 Jalan Riong, Bangsar, Kuala Lumpur, MY 59100");
-            ui8(c, r);
+            
         }
         else if (choice == 2) {
-            Restaurant r = new Restaurant ("Mishaltit", "mish123_99","0123456789", "Mishaltit restaurant is the best choice for Arabic & Western cuisine , Promises a value lifestyle proposition of great variety and quality food at affordable prices ", " 226 Jalan Ampang, Kuala Lumpur, MY 50450");
-            ui8(c,r);
+
         }
         else if (choice == 3) {
-            Restaurant r = new Restaurant ("Mamak Spot", "mk33St", "0123456789", "Mamak Station brings you the best in comfort food from the diverse street vendors of Malaysia. Our food is a celebration of flavors...layered from Chinese, Indian, and Malay roots.", "2 Jalan Robertson, G4 & G5, Idaman Robertson, Kuala Lumpur, MY 50150");
-            ui8(c,r);
-        }
-        else if (choice == 4) {
-            ui4(c);
+            
         }
     }
 
     public void ui6(Customer c) {
         Scanner input = new Scanner(System.in);
-        if (c.getCurrentOrder() == null) {
-        System.out.println("No current order. Enter anything to go back to previous menu. ");
-        input.next();
-        ui4(c);
+        int choice = input.nextInt();
+        if (choice == 1) {
+
         }
-        else {
-            System.out.println("Active Order: ");
-            System.out.println("ID: " + c.getCurrentOrder().getID()+". ");
-            System.out.println("Restaurant: " + c.getCurrentOrder().getResName()+". ");
-            System.out.println("Price: " +c.getCurrentOrder().getOrderPrice()+"RM. ");
-        
-            System.out.println("\nPlease enter the number corresponding with your desired option: "); 
-            System.out.println("1. Set order as Collected ");
-            System.out.println("2. Back to previous menu ");
-            int choice = input.nextInt();
-            if (choice == 1){
-                c.setCurrentOrder(null);
-                ui6(c);
-            }
-            else if (choice == 2){
-                ui4(c);
-            }
+        else if (choice == 2) {
+
+        }
+        else if (choice == 3) {
+            
         }
     }
 
@@ -240,7 +198,7 @@ public class HomeCustomer {
         }
     }
 
-    public void ui8(Customer c, Restaurant r) {
+    public void ui8() {
         Scanner input = new Scanner(System.in);
         int choice = input.nextInt();
         if (choice == 1) {
