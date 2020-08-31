@@ -48,7 +48,7 @@ public class Customer extends User {
     }
     
     public Order createNewOrder(Restaurant res, Cart shoppingCart) throws IOException {
-        Order or = new Order(this.getUsername(), res.getName(), shoppingCart.getChosenItems());
+        Order or = new Order(this.getUsername(), res.getUsername(), shoppingCart.getChosenItems());
         return or;
     }
 
