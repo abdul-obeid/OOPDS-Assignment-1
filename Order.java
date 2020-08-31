@@ -30,7 +30,9 @@ public class Order {
         if (f.exists()){
             Scanner readLastID = new Scanner(f);
             if (readLastID.hasNextLine()) {
-                return Integer.parseInt(readLastID.nextLine());
+                int scannedID = Integer.parseInt(readLastID.nextLine());
+                readLastID.close();
+                return scannedID;
             }
             else {
                 // FileWriter lastIDFileWriter = new FileWriter(f);
