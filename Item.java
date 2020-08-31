@@ -1,4 +1,4 @@
-public class Item{
+public class Item implements Comparable<Item>{
 	private int itemID;
 	private static int lastID = 0;
 	private String itemName;
@@ -23,14 +23,13 @@ public class Item{
 		this.itemDescription = itemDescription;
 		this.itemType = itemType;
 		this.availability = availability;
-		itemID = lastID++;
+		itemID = ++lastID;
 	}
 	
-	public Item(String itemName, // use this constructor to write new items to the files without incrementing the lastID,
+	public Item(String itemName, //
 				double itemPrice, 
 				String itemDescription, 
 				String itemType){
-					
 		this.itemName = itemName;
 		this.itemPrice = itemPrice;
 		this.itemDescription = itemDescription;
@@ -40,6 +39,9 @@ public class Item{
 	
 	public static int getLastID(){
 		return lastID;
+	}
+	public static void resetLastID( ){
+		lastID = 0;
 	}
 	
 	public void setItemName(String itemName){
@@ -88,10 +90,10 @@ public class Item{
 	
 	@Override
 	public String toString(){
-		return ("Item: "+itemName + ". Price: " + itemPrice + " RM. Description: " + itemDescription + ". Type: " + itemType +". ");
+		return ("Item: " + itemName + ".\n Price: " + itemPrice + " RM. \nDescription: " + itemDescription + ". \nType: " + itemType +". ");
 	}
 	
-	public String writeToFile(){
+	public String writeToFile(){ // writes new 
 		return (itemName + "\n" + itemPrice + "\n" + itemDescription + "\n" + itemType + "\n" + availability);
 	}
 	
@@ -99,4 +101,13 @@ public class Item{
 		return (itemName + "\n" + itemPrice + "\n" + itemDescription + "\n" + itemType );
 	}
 	
+	@Override
+	public int compareTo(Item item){
+		if(getItemPrice() > item.getItemPrice())
+			return 1; // > greater than
+		else if(getItemPrice()  == item.getItemPrice())
+			return 0; // ==
+		else
+			return -1; // <
+	}
 }
