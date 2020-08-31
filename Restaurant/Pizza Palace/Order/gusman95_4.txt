@@ -1,0 +1,21 @@
+4
+gusman95
+Pizza Palace
+Preparing
+27.0
+Pizza
+12.0
+Circular food
+Main dish
+Milkshake
+5.0
+Shaken milk
+Drink
+Fries
+5.0
+Fried potato
+Side
+Cookie
+5.0
+Sweet circular food
+Dessert
